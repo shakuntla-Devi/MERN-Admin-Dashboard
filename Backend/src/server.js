@@ -15,7 +15,9 @@ app.use(express.json())
 app.use("/api/users", userRoutes)
 app.use("/api/products", productRoutes)
 app.use("/api/dashboard", dashboardRoutes)
-
+app.get("/", (req, res) => {
+  res.send("Backend is running ✅");
+});
 connectDB();
 const PORT = process.env.PORT || 5000;
 
