@@ -7,9 +7,12 @@ import dashboardRoutes from "./routes/dashboardRoutes.js"
 import connectDB from "./Config/db.js"
 import dotenv from "dotenv";
 
+const FRONTEND_URL = "https://mern-admin-dashboard-lime.vercel.app";
 dotenv.config();
 const app = express()
-app.use(cors());
+app.use(cors({
+  origin: [FRONTEND_URL, "http://localhost:5173"] // Local frontend URL + live URL
+}));
 app.use(express.json())
 
 app.use("/api/users", userRoutes)
