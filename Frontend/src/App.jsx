@@ -17,7 +17,7 @@ const App = () => {
     <BrowserRouter>
 
       {/* MAIN LAYOUT */}
-      <div className="flex min-h-screen w-screen overflow-hidden">
+      <div className="flex min-h-screen w-screen ">
 
         {/* SIDEBAR */}
         <Sidebar isOpen={isOpen} />

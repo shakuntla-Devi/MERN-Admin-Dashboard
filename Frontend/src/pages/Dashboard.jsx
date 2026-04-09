@@ -3,8 +3,9 @@ import axios from "axios";
 import ProductChart from "../components/ProductChart";
 import RecentProducts from "../components/RecentProducts";
 import StatsCard from "../components/StatsCard";
+import ProductTable from "../components/ProductTable";
 
-const API = import.meta.env.VITE_API_URL; // ✅ env use
+const API = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
@@ -13,59 +14,55 @@ const Dashboard = () => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get(`${API}/products`);
-        setProducts(res.data);
+        setProducts(res.data || []); // ✅ safe fallback
       } catch (error) {
         console.log(error);
       }
     };
-
     fetchProducts();
   }, []);
 
-  // Chart Data
-  const chartData = [];
-
-  products.forEach((p) => {
-    const existing = chartData.find(
-      (item) => item.category === p.category
-    );
-
-    if (existing) {
-      existing.count += 1;
+  // ✅ Better chart data (no crash)
+  const chartData = products.reduce((acc, p) => {
+    const found = acc.find(item => item.category === p.category);
+    if (found) {
+      found.count += 1;
     } else {
-      chartData.push({
-        category: p.category,
-        count: 1,
-      });
+      acc.push({ category: p.category, count: 1 });
     }
-  });
+    return acc;
+  }, []);
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-[#f8fafc] text-gray-800">
+    <div className="w-full min-h-screen bg-[#f8fafc] text-gray-800 p-3 sm:p-6">
 
-      <div className="flex-1 w-full p-6 space-y-8">
+      {/* Heading */}
+      <h1 className="text-xl sm:text-3xl font-bold mb-4 sm:mb-6">
+        Dashboard Overview
+      </h1>
 
-        <h1 className="text-3xl font-bold text-gray-800">
-          Dashboard Overview
-        </h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-          <StatsCard title="Total Products" value={products.length} />
-          <StatsCard title="Categories" value={chartData.length} />
-          <StatsCard title="Stock Items" value={products.length * 2} />
-          <StatsCard title="Revenue" value={`₹${products.length * 500}`} />
-
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-          <ProductChart data={chartData} />
-          <RecentProducts products={products.slice(0, 5)} />
-
-        </div>
-
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6">
+        <StatsCard title="Total Products" value={products.length} />
+        <StatsCard title="Categories" value={chartData.length} />
+        <StatsCard title="Stock Items" value={products.length * 2} />
+        <StatsCard title="Revenue" value={`₹${products.length * 500}`} />
       </div>
+
+      {/* Chart + Recent */}
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
+        <div className="w-full min-w-0 h-[300px]">   {/* 🔥 important for chart */}
+          <ProductChart data={chartData} />
+        </div>
+
+        <RecentProducts products={products.slice(0, 5)} />
+      </div>
+
+      {/* Product Table */}
+      <div className="w-full min-w-0">
+        <ProductTable products={products} setProducts={setProducts} />
+      </div>
+
     </div>
   );
 };
