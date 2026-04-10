@@ -13,34 +13,47 @@ const Sidebar = ({ isOpen }) => {
   return (
     <div
       className={`bg-white border-r border-gray-200 text-gray-700 
-      min-h-screen p-5 transition-all duration-300 
-      ${isOpen ? "w-64" : "w-20"}`}
+      min-h-screen transition-all duration-300 
+      ${isOpen ? "w-48" : "w-16"} flex flex-col`}
     >
 
       {/* LOGO */}
-      <h2 className={`text-2xl font-bold mb-10 tracking-wide text-gray-800 
-        ${!isOpen && "hidden"}`}>
+      <h2
+        className={`text-lg font-semibold px-4 py-4 text-gray-800 
+        ${!isOpen && "hidden"}`}
+      >
         Admin
       </h2>
 
       {/* MENU */}
-      <ul className="space-y-3">
+      <ul className="flex flex-col gap-2 px-2">
+
         {menu.map((item, index) => (
           <li key={index}>
             <Link
               to={item.path}
-              className={`flex items-center gap-4 p-3 rounded-xl transition-all duration-200
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all
               ${
                 location.pathname === item.path
-                  ? "bg-indigo-100 text-indigo-600 font-semibold"
+                  ? "bg-indigo-100 text-indigo-600 font-medium"
                   : "text-gray-500 hover:bg-gray-100 hover:text-indigo-600"
               }`}
             >
-              <span className="text-lg">{item.icon}</span>
-              {isOpen && <span>{item.name}</span>}
+              {/* ICON */}
+              <span className="text-base flex justify-center w-5">
+                {item.icon}
+              </span>
+
+              {/* TEXT */}
+              {isOpen && (
+                <span className="text-sm whitespace-nowrap">
+                  {item.name}
+                </span>
+              )}
             </Link>
           </li>
         ))}
+
       </ul>
 
     </div>
