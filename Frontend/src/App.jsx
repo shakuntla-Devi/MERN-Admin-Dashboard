@@ -17,13 +17,13 @@ const App = () => {
     <BrowserRouter>
 
       {/* MAIN LAYOUT */}
-      <div className="flex min-h-screen w-screen ">
+      <div className="flex min-h-screen w-full ">
 
         {/* SIDEBAR */}
         <Sidebar isOpen={isOpen} />
 
         {/* MAIN CONTENT */}
-        <div className="flex-1 min-h-screen bg-[#0f172a]">
+        <div className="flex-1 min-h-screen bg-[#0f172a] w-full overflow-x-hidden">
 
           {/* TOGGLE BUTTON */}
           <button
