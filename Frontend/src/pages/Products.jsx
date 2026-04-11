@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductTable from "../components/ProductTable";
 
-const API = import.meta.env.VITE_API_URL; // ✅ env
+const API = import.meta.env.VITE_API_URL; // env
 
 const Products = () => {
 

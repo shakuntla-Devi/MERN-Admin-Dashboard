@@ -1,41 +1,17 @@
-import { Link } from "react-router-dom";
-import { FaBox, FaPlus, FaHome } from "react-icons/fa";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between items-center px-6 py-4 
-    bg-white border-b border-gray-200 shadow-sm">
+    <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 
+    bg-gray-100 border-b border-gray-300">
 
-      {/* Logo */}
-      <h1 className="text-xl font-bold text-gray-800 tracking-wide">
-        Admin Panel
+      {/* ✅ ONLY HEADING */}
+      <h1 className="text-lg sm:text-2xl font-semibold text-gray-700 tracking-wide">
+        Product Dashboard
       </h1>
 
-      {/* Links */}
-      <div className="flex gap-6 text-gray-600 font-medium">
+      {/* (optional) future right side */}
+      <div></div>
 
-        <Link 
-          to="/" 
-          className="flex items-center gap-2 hover:text-indigo-600 transition"
-        >
-          <FaHome /> Dashboard
-        </Link>
-
-        <Link 
-          to="/products" 
-          className="flex items-center gap-2 hover:text-indigo-600 transition"
-        >
-          <FaBox /> Products
-        </Link>
-
-        <Link 
-          to="/add-product" 
-          className="flex items-center gap-2 bg-indigo-500 px-4 py-2 rounded-lg text-white hover:bg-indigo-600 transition shadow-sm"
-        >
-          <FaPlus /> Add Product
-        </Link>
-
-      </div>
     </div>
   );
 };

@@ -9,99 +9,94 @@ const ProductTable = ({ products, setProducts = () => {} }) => {
 
   const navigate = useNavigate();
 
-  // 🔥 DELETE
-const deleteProduct = async (id) => {
-
-  const confirmDelete = window.confirm("Are you sure you want to delete this product?");
-
-  if (!confirmDelete) {
-    toast("Cancelled ❌");
-    return;
-  }
-
-  try {
-    // ✅ DELETE API
-    await axios.delete(`${API}/products/${id}`);
-
-    // ✅ AGAIN FETCH UPDATED DATA
-    const res = await axios.get(`${API}/products`);
-
-    setProducts(res.data || []);
-
-    toast.success("Product deleted successfully ✅");
-
-  } catch (error) {
-    toast.error("Delete failed ❌");
-    console.log(error);
-  }
-};
-
-  // 🔥 EDIT
-  const editProduct = (id) => {
-
-    const confirmEdit = window.confirm("Do you want to edit this product?");
-
-    if (!confirmEdit) {
-      toast("Edit cancelled ❌");
+  // DELETE
+  const deleteProduct = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) {
+      toast("Cancelled ❌");
       return;
     }
 
-    toast.success("Redirecting to edit... ✏️");
+    try {
+      await axios.delete(`${API}/products/${id}`);
+
+      const res = await axios.get(`${API}/products`);
+      setProducts(res.data || []);
+
+      toast.success("Product deleted successfully ✅");
+
+    } catch (error) {
+      toast.error("Delete failed ❌");
+      console.log(error);
+    }
+  };
+
+  // EDIT
+  const editProduct = (id) => {
+    if (!window.confirm("Do you want to edit this product?")) {
+      toast("Edit cancelled ❌");
+      return;
+    }
 
     navigate(`/edit-product/${id}`);
   };
 
   return (
-    <div className="bg-white border rounded-2xl p-4 w-full">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm w-full">
 
-      {/* ✅ ONLY TABLE SCROLL */}
+      {/* ✅ ONLY ONE SCROLL AREA */}
       <div className="overflow-x-auto">
 
-        <table className="min-w-[650px] w-full text-sm">
+        <table className="w-full min-w-[600px] text-sm">
 
+          {/* HEADER */}
           <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
             <tr>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Price</th>
-              <th className="px-4 py-2">Category</th>
-              <th className="px-4 py-2 text-center">Action</th>
+              <th className="px-4 py-3 text-left">Name</th>
+              <th className="px-4 py-3 text-left">Price</th>
+              <th className="px-4 py-3 text-left">Category</th>
+              <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
 
+          {/* BODY */}
           <tbody>
             {products.map((p) => (
               <tr key={p._id} className="border-b hover:bg-gray-50">
 
-                <td className="px-4 py-2 whitespace-nowrap">
+                {/* NAME */}
+                <td className="px-4 py-3">
                   {p.name}
                 </td>
 
-                <td className="px-4 py-2 text-indigo-600 whitespace-nowrap">
+                {/* PRICE */}
+                <td className="px-4 py-3 text-indigo-600">
                   ₹{p.price}
                 </td>
 
-                <td className="px-4 py-2 whitespace-nowrap">
+                {/* CATEGORY (FIXED ALIGNMENT) */}
+                <td className="px-4 py-3">
                   {p.category}
                 </td>
 
-                <td className="px-4 py-2 text-center whitespace-nowrap">
+                {/* ACTION */}
+                <td className="px-4 py-3">
+                  <div className="flex justify-center gap-3">
 
-                  {/* EDIT */}
-                  <button
-                    onClick={() => editProduct(p._id)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs mr-2 inline-flex items-center gap-1 focus:outline-none"
-                  >
-                    <FaEdit /> Edit
-                  </button>
+                    <button
+                      onClick={() => editProduct(p._id)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs flex items-center gap-1"
+                    >
+                      <FaEdit /> Edit
+                    </button>
 
-                  {/* DELETE */}
-                  <button
-                    onClick={() => deleteProduct(p._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs inline-flex items-center gap-1 focus:outline-none"
-                  >
-                    <FaTrash /> Delete
-                  </button>
+                    <button
+                      onClick={() => deleteProduct(p._id)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs flex items-center gap-1"
+                    >
+                      <FaTrash /> Delete
+                    </button>
 
+                  </div>
                 </td>
 
               </tr>

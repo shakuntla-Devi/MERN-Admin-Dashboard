@@ -9,17 +9,23 @@ const API = import.meta.env.VITE_API_URL;
 const EditProduct = () => {
 
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
 
-  // 🔥 FETCH PRODUCT
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  //  FETCH PRODUCT
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const res = await axios.get(`${API}/products/${id}`);
         setProduct(res.data);
-      } catch (error) {
+      } catch (err) {
+        setError(true);
         toast.error("Product not found ❌");
-        console.log(error);
+        console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -40,10 +46,13 @@ const EditProduct = () => {
         <div className="w-full max-w-md bg-white border border-gray-200 
         rounded-2xl shadow-sm p-4 sm:p-6">
 
-          {product ? (
-            <ProductForm product={product} isEdit={true} />
+          {/*  UI STATES */}
+          {loading ? (
+            <p className="text-center text-gray-500">Loading product... ⏳</p>
+          ) : error ? (
+            <p className="text-center text-red-500">Product not found ❌</p>
           ) : (
-            <p className="text-center text-gray-500">Loading...</p>
+            <ProductForm product={product} isEdit={true} />
           )}
 
         </div>
