@@ -1,10 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 import Sidebar from "./components/Sidebar";
+
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import AddProduct from "./pages/AddProduct";
+import EditProduct from "./pages/EditProduct"; // ✅ IMPORTANT ADD
 import Orders from "./pages/Orders";
 import Users from "./pages/Users";
 
@@ -13,11 +16,13 @@ const App = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-
     <BrowserRouter>
 
+      {/* 🔥 TOASTER */}
+      <Toaster position="top-right" />
+
       {/* MAIN LAYOUT */}
-      <div className="flex min-h-screen w-full ">
+      <div className="flex min-h-screen w-full">
 
         {/* SIDEBAR */}
         <Sidebar isOpen={isOpen} />
@@ -43,6 +48,9 @@ const App = () => {
               <Route path="/products" element={<Products />} />
 
               <Route path="/add-product" element={<AddProduct />} />
+
+              {/* 🔥 FIXED EDIT ROUTE */}
+              <Route path="/edit-product/:id" element={<EditProduct />} />
 
               <Route path="/orders" element={<Orders />} />
 
